@@ -5,6 +5,10 @@ export const Container = styled.div`
     max-width: 1120px;
     margin: 0 auto;
 
+    > div {
+        overflow-x: auto;
+    }
+
     table {
         width: 100%;
         border-spacing: 0 0.5rem;
