@@ -1,24 +1,10 @@
-import { useEffect, useState } from "react";
-import { api } from "../../services/api";
+import { useContext } from "react";
+import { TransactionsContext } from "../../TransactionsContext";
 import { Container } from "./styles";
 
-interface Transaction {
-    id: number;
-    title: string;
-    amount: number;
-    type: string;
-    category: string;
-    createdAt: string;
-}
-
 export function TransactionsTable() {
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const { transactions } = useContext(TransactionsContext);
 
-    useEffect(() => {
-        api.get("transactions").then((response) =>
-            setTransactions(response.data.transactions)
-        );
-    }, []);
     return (
         <Container>
             <div>
@@ -37,13 +23,18 @@ export function TransactionsTable() {
                             <tr key={transaction.id}>
                                 <td>{transaction.title}</td>
                                 <td className={transaction.type}>
-                                    {new Intl.NumberFormat('pt-BR', {
-                                        style: 'currency',
-                                        currency: 'BRL'
+                                    {new Intl.NumberFormat("pt-BR", {
+                                        style: "currency",
+                                        currency: "BRL",
                                     }).format(transaction.amount)}
                                 </td>
                                 <td>{transaction.category}</td>
-                                <td>                                    {new Intl.DateTimeFormat('pt-BR').format(new Date(transaction.createdAt))}</td>
+                                <td>
+                                    {" "}
+                                    {new Intl.DateTimeFormat("pt-BR").format(
+                                        new Date(transaction.createdAt)
+                                    )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

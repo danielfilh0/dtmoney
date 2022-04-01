@@ -1,41 +1,46 @@
 import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
-import dolarImg from '../../assets/dolar.svg';
-
+import dolarImg from "../../assets/dolar.svg";
 import { Container } from "./styles";
+import { TransactionsContext } from "../../TransactionsContext";
+import { useContext } from "react";
 
 export function Summary() {
-  return (
-    <Container>
-      <div>
-        <header>
-          <p>Entradas</p>
+    const { transactions } = useContext(TransactionsContext);
 
-          <img src={incomeImg} alt="Entradas" />
-        </header>
+    console.log(transactions);
 
-        <strong>R$1000,00</strong>
-      </div>
+    return (
+        <Container>
+            <div>
+                <header>
+                    <p>Entradas</p>
 
-      <div>
-        <header>
-          <p>Saídas</p>
+                    <img src={incomeImg} alt="Entradas" />
+                </header>
 
-          <img src={outcomeImg} alt="Saídas" />
-        </header>
+                <strong>R$1000,00</strong>
+            </div>
 
-        <strong>- R$500,00</strong>
-      </div>
+            <div>
+                <header>
+                    <p>Saídas</p>
 
-      <div className="highlight-background">
-        <header>
-          <p>Total</p>
+                    <img src={outcomeImg} alt="Saídas" />
+                </header>
 
-          <img src={dolarImg} alt="Total" />
-        </header>
+                <strong>- R$500,00</strong>
+            </div>
 
-        <strong>R$500,00</strong>
-      </div>
-    </Container>
-  );
+            <div className="highlight-background">
+                <header>
+                    <p>Total</p>
+
+                    <img src={dolarImg} alt="Total" />
+                </header>
+
+                <strong>R$500,00</strong>
+            </div>
+        </Container>
+    );
 }

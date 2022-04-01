@@ -5,8 +5,12 @@ import { Header } from "./components/Header";
 import { GlobalStyle } from "./styles/global";
 import { TransactionsTable } from "./components/TransactionsTable";
 import { NewTransactionModal } from "./components/NewTransactionModal";
+import {
+    TransactionsContext,
+    TransactionsProvider,
+} from "./TransactionsContext";
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 export function App() {
     const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] =
@@ -21,19 +25,20 @@ export function App() {
     }
 
     return (
-        <>
+        <TransactionsProvider>
             <GlobalStyle />
 
-            <Header
-                onOpenNewTransactionModal={handleOpenNewTransactionModal}
-            />
+            <Header onOpenNewTransactionModal={handleOpenNewTransactionModal} />
 
             <Dashboard />
 
-            <NewTransactionModal isOpen={isNewTransactionModalOpen} onRequestClose={handleCloseNewTransactionModal} />
+            <NewTransactionModal
+                isOpen={isNewTransactionModalOpen}
+                onRequestClose={handleCloseNewTransactionModal}
+            />
 
             <TransactionsTable />
-        </>
+        </TransactionsProvider>
     );
 }
 
