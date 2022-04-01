@@ -1,9 +1,10 @@
+import { useContext } from "react";
+import { TransactionsContext } from "../../TransactionsContext";
+import { formatCurrency } from "../../utils/formatData";
+import { Container } from "./styles";
 import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
 import dolarImg from "../../assets/dolar.svg";
-import { Container } from "./styles";
-import { TransactionsContext } from "../../TransactionsContext";
-import { useContext } from "react";
 
 export function Summary() {
     const { transactions } = useContext(TransactionsContext);
@@ -38,7 +39,7 @@ export function Summary() {
                     <img src={incomeImg} alt="Entradas" />
                 </header>
 
-                <strong>{summary.deposits}</strong>
+                <strong>{formatCurrency(summary.deposits)}</strong>
             </div>
 
             <div>
@@ -48,7 +49,7 @@ export function Summary() {
                     <img src={outcomeImg} alt="Saídas" />
                 </header>
 
-                <strong>- {summary.withdraws}</strong>
+                <strong>- {formatCurrency(summary.withdraws)}</strong>
             </div>
 
             <div className="highlight-background">
@@ -58,7 +59,7 @@ export function Summary() {
                     <img src={dolarImg} alt="Total" />
                 </header>
 
-                <strong>{summary.total}</strong>
+                <strong>{formatCurrency(summary.total)}</strong>
             </div>
         </Container>
     );
