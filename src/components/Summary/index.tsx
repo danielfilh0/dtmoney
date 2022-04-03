@@ -27,8 +27,6 @@ export function Summary() {
         }
     );
 
-    console.log(transactions);
-
     return (
         <Container>
             <div>

@@ -1,9 +1,20 @@
 import { Container } from "./styles";
 import { formatCurrency, formatDate } from "../../utils/formatData";
 import { useTransactions } from "../../hooks/useTransactions";
+import { MdDelete } from "react-icons/md";
 
 export function TransactionsTable() {
-    const { transactions } = useTransactions();
+    const { transactions, removeTransaction } = useTransactions();
+
+    function confirmRemoveTransaction(item: string, id: Number) {
+        const confirm = window.confirm(
+            `Você tem certeza que deseja remover ${item}?`
+        );
+
+        if (confirm) {
+            removeTransaction(id);
+        }
+    }
 
     return (
         <Container>
@@ -15,6 +26,7 @@ export function TransactionsTable() {
                             <th>Valor</th>
                             <th>Categoria</th>
                             <th>Data</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
 
@@ -27,6 +39,18 @@ export function TransactionsTable() {
                                 </td>
                                 <td>{transaction.category}</td>
                                 <td>{formatDate(transaction.createdAt)}</td>
+                                <td className="actions">
+                                    <button
+                                        onClick={() =>
+                                            confirmRemoveTransaction(
+                                                transaction.title,
+                                                transaction.id
+                                            )
+                                        }
+                                    >
+                                        <MdDelete />
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

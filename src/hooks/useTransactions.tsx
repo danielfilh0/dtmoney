@@ -1,4 +1,12 @@
-import { createContext, useEffect, useState, ReactNode, useContext } from "react";
+import {
+    createContext,
+    useEffect,
+    useState,
+    ReactNode,
+    useContext,
+    Dispatch,
+    SetStateAction,
+} from "react";
 import { api } from "../services/api";
 
 interface Transaction {
@@ -10,8 +18,7 @@ interface Transaction {
     createdAt: string;
 }
 
-type TransactionInput = Omit<Transaction, 'id' | 'createdAt'>;
-
+type TransactionInput = Omit<Transaction, "id" | "createdAt">;
 
 interface TransactionsProviderProps {
     children: ReactNode;
@@ -20,9 +27,12 @@ interface TransactionsProviderProps {
 interface TransactionsContextData {
     transactions: Transaction[];
     createTransaction: (transaction: TransactionInput) => Promise<void>;
+    removeTransaction: (id: Number) => Promise<void>;
 }
 
-const TransactionsContext = createContext<TransactionsContextData>({} as TransactionsContextData);
+const TransactionsContext = createContext<TransactionsContextData>(
+    {} as TransactionsContextData
+);
 
 export function TransactionsProvider({ children }: TransactionsProviderProps) {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -34,20 +44,32 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     }, []);
 
     async function createTransaction(transactionInput: TransactionInput) {
-        const response = await api.post('/transactions', {
+        const response = await api.post("/transactions", {
             ...transactionInput,
             createdAt: new Date(),
         });
+        
         const { transaction } = response.data;
 
-        setTransactions([
-            ...transactions,
-            transaction,
-        ]);
+        setTransactions([...transactions, transaction]);
+    }
+
+    async function removeTransaction(id: Number) {
+        const newTransactionsList = transactions.filter(
+            (transaction) => transaction.id !== id
+        );
+
+        await api.post("/transactions", {
+            newTransactionsList,
+        });
+
+        setTransactions(newTransactionsList);
     }
 
     return (
-        <TransactionsContext.Provider value={{ transactions, createTransaction }}>
+        <TransactionsContext.Provider
+            value={{ transactions, createTransaction, removeTransaction }}
+        >
             {children}
         </TransactionsContext.Provider>
     );

@@ -39,6 +39,27 @@ export const Container = styled.div`
             &.withdraw {
                 color: var(--red);
             }
+
+            &.actions {
+                display: flex;
+                justify-content: flex-start;
+            }
+
+            button {
+                color: var(--text-body);
+                background: unset;
+                border: unset;
+                transition: color 0.2s;
+
+                &:hover {
+                    color: var(--red);
+                }
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
         }
     }
 `;
