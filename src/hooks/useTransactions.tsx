@@ -4,8 +4,6 @@ import {
     useState,
     ReactNode,
     useContext,
-    Dispatch,
-    SetStateAction,
 } from "react";
 import { api } from "../services/api";
 
@@ -27,7 +25,8 @@ interface TransactionsProviderProps {
 interface TransactionsContextData {
     transactions: Transaction[];
     createTransaction: (transaction: TransactionInput) => Promise<void>;
-    removeTransaction: (id: Number) => Promise<void>;
+    removeTransaction: (id: number) => Promise<void>;
+    editTransaction: (transaction: Transaction, index: number) => Promise<void>;
 }
 
 const TransactionsContext = createContext<TransactionsContextData>(
@@ -41,6 +40,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
         api.get("transactions").then((response) =>
             setTransactions(response.data.transactions)
         );
+        console.log(transactions);
     }, []);
 
     async function createTransaction(transactionInput: TransactionInput) {
@@ -48,13 +48,13 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
             ...transactionInput,
             createdAt: new Date(),
         });
-        
+
         const { transaction } = response.data;
 
         setTransactions([...transactions, transaction]);
     }
 
-    async function removeTransaction(id: Number) {
+    async function removeTransaction(id: number) {
         const newTransactionsList = transactions.filter(
             (transaction) => transaction.id !== id
         );
@@ -63,12 +63,31 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
             newTransactionsList,
         });
 
-        setTransactions(newTransactionsList);
+        setTransactions([...newTransactionsList]);
+    }
+
+    async function editTransaction(transaction: Transaction, index: number) {
+        const atualizedTransactions = transactions.fill(
+            transaction,
+            index,
+            index + 1,
+        );
+
+        await api.post("/transactions", {
+            atualizedTransactions,
+        });
+
+        setTransactions([...atualizedTransactions]);
     }
 
     return (
         <TransactionsContext.Provider
-            value={{ transactions, createTransaction, removeTransaction }}
+            value={{
+                transactions,
+                createTransaction,
+                removeTransaction,
+                editTransaction,
+            }}
         >
             {children}
         </TransactionsContext.Provider>

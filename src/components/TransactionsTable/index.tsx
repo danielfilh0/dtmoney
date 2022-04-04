@@ -1,20 +1,9 @@
 import { Container } from "./styles";
-import { formatCurrency, formatDate } from "../../utils/formatData";
 import { useTransactions } from "../../hooks/useTransactions";
-import { MdDelete } from "react-icons/md";
+import { Transaction } from "../Transaction";
 
 export function TransactionsTable() {
-    const { transactions, removeTransaction } = useTransactions();
-
-    function confirmRemoveTransaction(item: string, id: Number) {
-        const confirm = window.confirm(
-            `Você tem certeza que deseja remover ${item}?`
-        );
-
-        if (confirm) {
-            removeTransaction(id);
-        }
-    }
+    const { transactions } = useTransactions();
 
     return (
         <Container>
@@ -31,27 +20,17 @@ export function TransactionsTable() {
                     </thead>
 
                     <tbody>
-                        {transactions.map((transaction) => (
-                            <tr key={transaction.id}>
-                                <td>{transaction.title}</td>
-                                <td className={transaction.type}>
-                                    {formatCurrency(transaction.amount)}
-                                </td>
-                                <td>{transaction.category}</td>
-                                <td>{formatDate(transaction.createdAt)}</td>
-                                <td className="actions">
-                                    <button
-                                        onClick={() =>
-                                            confirmRemoveTransaction(
-                                                transaction.title,
-                                                transaction.id
-                                            )
-                                        }
-                                    >
-                                        <MdDelete />
-                                    </button>
-                                </td>
-                            </tr>
+                        {transactions.map((transaction, index) => (
+                            <Transaction
+                                index={index}
+                                key={transaction.id}
+                                id={transaction.id}
+                                title={transaction.title}
+                                type={transaction.type}
+                                amount={transaction.amount}
+                                category={transaction.category}
+                                createdAt={transaction.createdAt}
+                            />
                         ))}
                     </tbody>
                 </table>
