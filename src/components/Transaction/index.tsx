@@ -4,6 +4,7 @@ import { useTransactions } from "../../hooks/useTransactions";
 import { formatCurrency, formatDate } from "../../utils/formatData";
 import { Container } from "./styles";
 import { EditTransactionModal } from "../EditTransactionModal";
+import { RemoveTransactionModal } from "../RemoveTransactionModal";
 
 interface TransactionProps {
     index: number;
@@ -25,18 +26,7 @@ export function Transaction({
     createdAt,
 }: TransactionProps) {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
-    const { removeTransaction } = useTransactions();
-
-    function confirmRemoveTransaction(title: string, id: number) {
-        const confirm = window.confirm(
-            `Você tem certeza que deseja remover ${title}?`
-        );
-
-        if (confirm) {
-            removeTransaction(id);
-        }
-    }
+    const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
 
     return (
         <Container>
@@ -53,7 +43,7 @@ export function Transaction({
                     <MdEdit />
                 </button>
 
-                <button onClick={() => confirmRemoveTransaction(title, id)}>
+                <button onClick={() => setIsRemoveModalOpen(true)}>
                     <MdDelete />
                 </button>
             </td>
@@ -68,6 +58,13 @@ export function Transaction({
                 category={category}
                 createdAt={createdAt}
                 id={id}
+            />
+
+            <RemoveTransactionModal
+                id={id}
+                title={title}
+                isOpen={isRemoveModalOpen}
+                onRequestClose={() => setIsRemoveModalOpen(false)}
             />
         </Container>
     );

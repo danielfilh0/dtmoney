@@ -8,6 +8,11 @@ export const Container = styled.form`
         margin-bottom: 2rem;
     }
 
+    p {
+        font-size: 1.125rem;
+        color: var(--text-title);
+    }
+
     input {
         width: 100%;
         padding: 0 1.5rem;
@@ -38,7 +43,6 @@ export const Container = styled.form`
         width: 100%;
         padding: 0 1.5rem;
         height: 4rem;
-        background: var(--green);
         color: var(--shape);
         border-radius: 0.25rem;
         border: 0;
@@ -49,6 +53,14 @@ export const Container = styled.form`
 
         &:hover {
             filter: brightness(0.9);
+        }
+
+        &.edit {
+            background: var(--green);
+        }
+
+        &.remove {
+            background: var(--red);
         }
     }
 `;

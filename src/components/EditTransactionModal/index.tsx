@@ -115,7 +115,7 @@ export function EditTransactionModal({
                     onChange={(event) => setCategory(event.target.value)}
                 />
 
-                <button type="submit">Editar</button>
+                <button type="submit" className="edit">Editar</button>
             </Container>
         </Modal>
     );
